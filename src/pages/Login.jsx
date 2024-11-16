@@ -1,17 +1,24 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Login = () => {
-    const { signInUser } = useContext(AuthContext)
+    const { signInUser, setUser } = useContext(AuthContext)
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [error, setError] = useState({})
     const handleSubmit = (e) => {
         e.preventDefault()
         const form = new FormData(e.target)
         const email = form.get('email');
         const password = form.get('password');
         signInUser(email, password)
-            .catch(error => {
-                alert(error.message)
+            .then(res => {
+                setUser(res.user)
+                navigate(location?.state ? location.state : '/')
+            })
+            .catch(err => {
+                setError({ ...error, login: err.code })
             })
     }
     return (
@@ -30,6 +37,11 @@ const Login = () => {
                             <span className="label-text">Password</span>
                         </label>
                         <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+                        <label className="label text-red-600">
+                            {
+                                error.login
+                            }
+                        </label>
                         <label className="label">
                             <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                         </label>

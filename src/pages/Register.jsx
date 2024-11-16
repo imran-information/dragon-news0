@@ -1,21 +1,28 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 
 const Register = () => {
     const { signUpUser } = useContext(AuthContext)
+    const [error, setError] = useState({})
     const handleSubmit = e => {
         e.preventDefault();
         const form = new FormData(e.target)
         const name = form.get('name')
+        if (name.length < 6) {
+            setError({ ...error, name: "must be more then 6 character long" })
+            return
+        }
         const url = form.get('photo')
         const email = form.get('email')
         const password = form.get('password')
         signUpUser(email, password)
             .then(res => console.log(res.user))
+            .catch(err => {
 
-        console.log(name, url)
+            })
+
     }
     return (
         <div className="flex  justify-center items-center py-20 ">
@@ -27,6 +34,12 @@ const Register = () => {
                             <span className="label-text">Name</span>
                         </label>
                         <input type="text" name="name" placeholder="name" className="input input-bordered" required />
+                        {
+                            error.name && <label className="label text-red-500">
+                                {error.name}
+                            </label>
+                        }
+
                     </div>
                     <div className="form-control">
                         <label className="label">

@@ -11,7 +11,7 @@ const NewsDetails = () => {
             <header className='my-2'>
                 <Header></Header>
             </header>
-            <main className='w-10/12 mx-auto grid grid-cols-12 my-5 gap-5'>
+            <main className='w-10/12 mx-auto grid grid-cols-12 my-5 gap-5 font-poppins'>
                 <section className='col-span-9'>
                     <h2 className='text-xl font-poppins font-semibold'>Dragon News</h2>
                     <div className="card bg-base-100 shadow-xl">
